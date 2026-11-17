@@ -96,6 +96,7 @@ $("#lib-load").addEventListener("click", async () => {
   const p = $("#lib").value;
   if (!p) return;
   const t = await api("/api/profile-text/" + p);
+  if (/^---[ \t]*$/m.test(t.profile)) { $("#yaml").value = t.profile.trim() + "\n"; return; }   // a saved profile already holds its job
   $("#yaml").value = t.profile.trim() + "\n---\n" + (t.example_job ? t.example_job.replace(/^\s*-\s*\{file:[^\n]*$/m, "  - {file: \"(replaced by the uploaded file)\", role: paper}").trim() : "job:\n  id: my-paper\n") + "\n";
 });
 function lintHtml(res) {

@@ -9,6 +9,8 @@ invented. A person approves the result against deliberately planted errors befor
 
 ## Start it in GitHub Codespaces
 
+**Full step-by-step guide: [`docs/CODESPACES_GUIDE.md`](docs/CODESPACES_GUIDE.md).** In short:
+
 1. On GitHub: **Code → Codespaces → Create codespace on main**.
 2. Wait for the first setup (about 5–10 minutes the first time: it installs Python and Node packages, Poppler,
    LibreOffice and a headless browser, then runs a quick self-test).
