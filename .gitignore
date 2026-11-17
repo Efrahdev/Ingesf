@@ -1,0 +1,7 @@
+node_modules/
+__pycache__/
+*.pyc
+# run folders, trials and uploads hold copies of your source papers
+ingest/runs/
+ingest/scratch/
+workspace/

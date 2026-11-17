@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Ingesf — document ingestion</title>
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<header class="top">
+  <div class="brand">Ingesf <span>document → checked question pack</span></div>
+  <label class="btn primary" for="file">Upload a paper<input id="file" type="file" hidden></label>
+</header>
+<div class="layout">
+  <aside class="side">
+    <h3>Papers</h3>
+    <ul id="uploads" class="list"></ul>
+    <h3>Runs</h3>
+    <ul id="runs" class="list"></ul>
+  </aside>
+  <main id="main">
+    <section class="empty" id="welcome">
+      <h1>Turn any paper into a checked question pack</h1>
+      <p>PDF (typed or scanned), screenshots and photos, Word, PowerPoint, OpenDocument, HTML.</p>
+      <ol class="how">
+        <li><b>Upload</b> a paper. The program measures it and writes a <b>profiling brief</b> with page images.</li>
+        <li>Give the brief and the images to <b>any AI model</b>. It replies with one YAML <b>profile</b>. Paste it here, <b>Lint</b> and <b>Try</b> until clean.</li>
+        <li><b>Run</b>: the program converts the paper with no AI and runs six independent checks.</li>
+        <li><b>Review</b> the packet (some items are corrupted on purpose), approve, and download the pack.</li>
+      </ol>
+      <label class="btn primary big" for="file">Upload a paper</label>
+    </section>
+
+    <section id="paper" hidden>
+      <div class="paperhead">
+        <div><h1 id="p-name"></h1><div class="muted" id="p-meta"></div></div>
+      </div>
+      <nav class="steps" id="steps">
+        <button data-step="1" class="on">1 · Profiling brief</button>
+        <button data-step="2">2 · AI profile</button>
+        <button data-step="3">3 · Run &amp; checks</button>
+        <button data-step="4">4 · Review &amp; approve</button>
+      </nav>
+
+      <div class="step" data-step="1">
+        <p>The program measures the file (structure, numbering, text layer, figures) and writes a brief for the AI. For page sources it also draws every page's text lines, figures and numbered regions.</p>
+        <div class="row">
+          <label>Pages <input id="b-pages" placeholder="all, or e.g. 4-40" size="14"></label>
+          <label>Columns <select id="b-columns"><option>1</option><option>2</option></select></label>
+          <button class="btn primary" id="b-go">Make the brief</button>
+          <span class="spin" id="b-spin" hidden>working…</span>
+        </div>
+        <div id="b-out"></div>
+      </div>
+
+      <div class="step" data-step="2" hidden>
+        <p>Paste the AI's whole YAML reply (profile, a line with <code>---</code>, then the job). Or start from a profile in the library.</p>
+        <div class="row">
+          <select id="lib"><option value="">Start from a library profile…</option></select>
+          <button class="btn" id="lib-load">Insert</button>
+        </div>
+        <textarea id="yaml" spellcheck="false" placeholder="profile:&#10;  id: …&#10;---&#10;job:&#10;  id: …"></textarea>
+        <div class="row">
+          <button class="btn" id="y-lint">Lint</button>
+          <button class="btn primary" id="y-try">Try (trial conversion)</button>
+          <button class="btn" id="y-save-lib">Save to library</button>
+          <span class="spin" id="y-spin" hidden>working…</span>
+        </div>
+        <div id="y-out"></div>
+        <details class="corr"><summary>Corrections overlay (human fixes, optional)</summary>
+          <p class="muted">One entry per fix: question_id, field, old_value_sha256, new_value, reason, author, date. A stale entry stops the run.</p>
+          <textarea id="corr" spellcheck="false" placeholder="- question_id: pack-id/q12&#10;  field: answer&#10;  old_value_sha256: …"></textarea>
+          <button class="btn" id="corr-save">Save corrections</button>
+        </details>
+      </div>
+
+      <div class="step" data-step="3" hidden>
+        <p>Converts the paper with no AI, runs gates G1–G6 (each first proves it can fail), builds the review packet and <b>stops at Gate B</b>. A FAIL cannot be waived: fix the profile, job or source and run again.</p>
+        <div class="row"><button class="btn primary" id="r-go">Run the pipeline</button><span class="spin" id="r-spin" hidden>running (this can take a minute)…</span></div>
+        <div id="r-out"></div>
+      </div>
+
+      <div class="step" data-step="4" hidden>
+        <div id="v-out"><p class="muted">Run the pipeline first.</p></div>
+      </div>
+    </section>
+
+    <section id="runview" hidden></section>
+  </main>
+</div>
+<script src="/static/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,8 @@
+# Python packages for the converter (engine) and the web interface (stdlib only)
+beautifulsoup4==4.15.0
+soupsieve==2.9.2
+PyYAML==6.0.1
+jsonschema==4.26.0
+pypdfium2==5.13.0
+pillow==12.3.0
+numpy==2.5.3
